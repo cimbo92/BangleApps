@@ -1924,8 +1924,7 @@
     "icon": "velneo.png",
     "version":"0.01",
     "description": "Velneo application for heart rate monitor",
-    "readme": "README.md",
-    "tags": "",
+    "tags": "app",
     "storage": [
       {"name":"velneo.app.js","url":"velneo.js"},
       {"name":"velneo.img","url":"velneo-icon.js","evaluate":true}
