@@ -1918,5 +1918,18 @@
       {"name":"magnav.img","url":"magnav-icon.js","evaluate":true}
     ],
     "data":[{"name":"magnav.json"}]
+  },
+   { "id": "velneo",
+    "name": "Velneo",
+    "icon": "velneo.png",
+    "version":"0.01",
+    "description": "Velneo application for heart rate monitor",
+    "readme": "README.md",
+    "tags": "tool,widgets",
+    "storage": [
+      {"name":"velneo.app.js","url":"velneo.min.js"},
+      {"name":"velneo.img","url":"velneo-icon.js","evaluate":true}
+    ],
+    "data":[{"name":"velneo.json"}]
   }
 ]
