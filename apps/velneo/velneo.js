@@ -3,12 +3,15 @@ function screenCenter()
   return { x: g.getWidth() / 2, y: g.getHeight() / 2};
 }
 
+let bpm = 50;
+let bpmBaseIncrement = 3;
+let smoothCoeff = 0.9;
+
 class Heart {
   constructor(position, size){
     this.position = position;
     this.size = size;
     this.originalSize = size;
-
     this.setHRMService();
   }
 
@@ -30,11 +33,11 @@ class Heart {
                   this.position.x + this.size * 0.43, this.position.y + this.size * 0.07,
                   this.position.x, this.position.y + this.size * 0.5]);
   }
-  
+
   dismiss(){
     Bangle.setHRMPower(0);
   }
-    
+
 
   draw(){
     heart.drawPoly(); // Bottom part of the heart
@@ -46,7 +49,7 @@ class Heart {
     NRF.setServices({
       0x180D: { // heart_rate
         0x2A37: { // heart_rate_measurement
-        value : [0x06, 0],
+        value : [0x06, this.bpm],
         maxLen : 32,
         notify: true
         }
@@ -59,28 +62,39 @@ class Heart {
 
   startTrackingHRM(){
     Bangle.setHRMPower(1);
+    print(bpm);
     Bangle.on('HRM',function(hrm) {
       /*hrm is an object containing:
         { "bpm": number,             // Beats per minute
           "confidence": number,      // 0-100 percentage confidence in the heart rate
           "raw": Uint8Array,         // raw samples from heart rate monitor
        */
+      print(bpm);
+      let heartRateVariation = (hrm.bpm - bpm);
+
+      if(hrm.confidence > 0)
+        bpm = bpm + Math.round(heartRateVariation * (hrm.confidence / 100.0) * smoothCoeff);
+      else
+        bpm = heartRateVariation > 0 ? bpm + bpmBaseIncrement : bpm - bpmBaseIncrement;
+
+      bpm = bpm < 0 ? 0 : bpm;
+
+      hrm.correctedBpm = bpm;
+
       print(hrm); //Debug info of HRM printed to terminal
-      if(hrm.confidence >= 50)
+      //Update the HRM BLE Service
+      try
       {
-        //Update the HRM BLE Service
-        try
-        {
-          NRF.updateServices({
-            0x180D : {
-              0x2A37 : {
-                value : [0x06, hrm.bpm],
-                notify: true
-              }
+        NRF.updateServices({
+          0x180D : {
+            0x2A37 : {
+              value : [0x06, bpm],
+              notify: true
             }
-          });
-        }catch(e) { }
-      }
+          }
+        });
+      }catch(e) { }
+
     });
   }
 
@@ -135,6 +149,6 @@ draw();
   
 
 setWatch(() => {
-    heart.dismiss();
-    load();
+  load();
+  heart.dismiss();
 },BTN2);
