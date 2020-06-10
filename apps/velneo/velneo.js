@@ -65,9 +65,9 @@ class Heart {
           "confidence": number,      // 0-100 percentage confidence in the heart rate
           "raw": Uint8Array,         // raw samples from heart rate monitor
        */
+      print(hrm); //Debug info of HRM printed to terminal
       if(hrm.confidence >= 50)
       {
-        print(hrm); //Debug info of HRM printed to terminal
         //Update the HRM BLE Service
         try
         {
@@ -135,6 +135,6 @@ draw();
   
 
 setWatch(() => {
-  load();
-  heart.dismiss();
+    heart.dismiss();
+    load();
 },BTN2);
