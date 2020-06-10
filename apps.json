@@ -1925,11 +1925,10 @@
     "version":"0.01",
     "description": "Velneo application for heart rate monitor",
     "readme": "README.md",
-    "tags": "tool,widgets",
+    "tags": "",
     "storage": [
       {"name":"velneo.app.js","url":"velneo.min.js"},
       {"name":"velneo.img","url":"velneo-icon.js","evaluate":true}
-    ],
-    "data":[{"name":"velneo.json"}]
+    ]
   }
 ]
