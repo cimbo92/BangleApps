@@ -1927,7 +1927,7 @@
     "readme": "README.md",
     "tags": "",
     "storage": [
-      {"name":"velneo.app.js","url":"velneo.app.js"},
+      {"name":"velneo.app.js","url":"velneo.js"},
       {"name":"velneo.img","url":"velneo-icon.js","evaluate":true}
     ]
   }
